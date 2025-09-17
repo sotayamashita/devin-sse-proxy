@@ -1,3 +1,5 @@
+"""Async proxy bridging STDIN/STDOUT JSON-RPC to Devin SSE and HTTP endpoints."""
+
 import argparse
 import asyncio
 import json
