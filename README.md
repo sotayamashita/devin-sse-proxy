@@ -26,7 +26,10 @@ uv run python main.py --api-key <YOUR_DEVIN_PERSONAL_API_KEY>
 ```
 
 ## Claude Desktop Integration
-Edit `~/Library/Application Support/Claude/claude_desktop_config.json` to point the `devin` MCP server at this script. Example:
+Edit `~/Library/Application Support/Claude/claude_desktop_config.json` to point the `devin` MCP server at this script.
+
+### Build from source
+
 ```json
 {
   "mcpServers": {
@@ -41,6 +44,28 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` to point 
   }
 }
 ```
+
+### Using the Docker Image
+
+If you publish the image to GHCR, call Docker directly so Claude keeps STDIN/STDOUT attached:
+```json
+{
+  "mcpServers": {
+    "devin": {
+      "command": "/usr/local/bin/docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "DEVIN_API_KEY=<YOUR_DEVIN_PERSONAL_API_KEY>",
+        "ghcr.io/sotayamashita/devin-sse-proxy:latest"
+      ]
+    }
+  }
+}
+```
+
 Restart Claude Desktop after saving the file. Private repositories indexed in Devin should now respond through the proxy.
 
 ## Limitations

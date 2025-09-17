@@ -1,0 +1,8 @@
+.github
+.dockerignore
+.gitignore
+renovate.json
+**/*.yml
+**/*.yaml
+**/*.md
+LICENSE
