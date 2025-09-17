@@ -1,0 +1,82 @@
+fail_fast: true
+
+default_language_version:
+  python: python3.13
+
+default_install_hook_types:
+  - pre-commit
+
+repos:
+  # ---------------------------------------------------------------------------- #
+  #                              🔄 Pre-Commit Hooks                             #
+  # ---------------------------------------------------------------------------- #
+
+  # ----------------------------- 🔒 Security Tools ---------------------------- #
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.27.0
+    hooks:
+      - id: gitleaks
+        name: "🔒 security · Detect hardcoded secrets"
+
+  # --------------------------- 🔍 Code Quality Tools -------------------------- #
+  ### Python Tools ###
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.3.1
+    hooks:
+      - id: autoflake
+        name: "🐍 python · Remove unused imports and variables"
+        args:
+          [
+            "--in-place",
+            "--recursive",
+            "--remove-all-unused-imports",
+            "--remove-unused-variables",
+            "--ignore-init-module-imports",
+          ]
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: "🐍 python · Sort imports"
+        args: ["--profile", "black"]
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.13
+    hooks:
+      - id: ruff-format
+        name: "🐍 python · Format with Ruff"
+
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.24.1
+    hooks:
+      - id: validate-pyproject
+        name: "🐍 python · Validate pyproject.toml"
+        additional_dependencies: ["validate-pyproject-schema-store[all]"]
+
+  # ---------------------------- 📁 Filesystem Tools --------------------------- #
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Filesystem Checks
+      - id: check-executables-have-shebangs
+        name: "📁 filesystem/⚙️ exec · Verify shebang presence"
+      - id: check-shebang-scripts-are-executable
+        name: "📁 filesystem/⚙️ exec · Verify script permissions"
+      - id: check-case-conflict
+        name: "📁 filesystem/📝 names · Check case sensitivity"
+      - id: check-illegal-windows-names
+        name: "📁 filesystem/📝 names · Validate Windows filenames"
+      - id: check-symlinks
+        name: "📁 filesystem/🔗 symlink · Check symlink validity"
+      - id: destroyed-symlinks
+        name: "📁 filesystem/🔗 symlink · Detect broken symlinks"
+      # ------------------------------- 🌳 Git Tools ------------------------------- #
+      - id: check-merge-conflict
+        name: "🌳 git · Detect conflict markers"
+      - id: forbid-new-submodules
+        name: "🌳 git · Prevent submodule creation"
+      - id: check-added-large-files
+        name: "🌳 git · Block large file commits"
+        args: ["--maxkb=5000"]

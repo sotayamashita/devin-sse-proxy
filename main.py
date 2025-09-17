@@ -22,7 +22,9 @@ def parse_args() -> argparse.Namespace:
         prog="devin-mcp-remote",
         description="Proxy STDIO to Devin MCP over SSE/HTTP",
     )
-    parser.add_argument("--api-key", help="Devin Personal API key (falls back to DEVIN_API_KEY)")
+    parser.add_argument(
+        "--api-key", help="Devin Personal API key (falls back to DEVIN_API_KEY)"
+    )
     parser.add_argument("--sse-url", default=DEFAULT_SSE_URL, help="Devin SSE endpoint")
     parser.add_argument("--rpc-url", default=DEFAULT_RPC_URL, help="Devin RPC endpoint")
     parser.add_argument(
@@ -37,9 +39,7 @@ def parse_args() -> argparse.Namespace:
 def resolve_api_key(args: argparse.Namespace) -> str:
     api_key = args.api_key or os.getenv(API_KEY_ENV)
     if not api_key:
-        raise SystemExit(
-            "API key is required. Provide --api-key or set DEVIN_API_KEY."
-        )
+        raise SystemExit("API key is required. Provide --api-key or set DEVIN_API_KEY.")
     return api_key
 
 
@@ -117,7 +117,9 @@ async def apply_session_headers(base_headers: dict, state: "ProxyState") -> dict
     return headers
 
 
-async def handle_endpoint_event(data: Optional[str], sse_url: str, state: "ProxyState") -> None:
+async def handle_endpoint_event(
+    data: Optional[str], sse_url: str, state: "ProxyState"
+) -> None:
     if data is None:
         return
     raw = data.strip()
@@ -133,9 +135,7 @@ async def handle_endpoint_event(data: Optional[str], sse_url: str, state: "Proxy
             endpoint_value = parsed
         elif isinstance(parsed, dict):
             endpoint_value = (
-                parsed.get("endpoint")
-                or parsed.get("url")
-                or parsed.get("path")
+                parsed.get("endpoint") or parsed.get("url") or parsed.get("path")
             )
         else:
             endpoint_value = None
@@ -228,7 +228,9 @@ async def forward_stdin(
             async with session.post(rpc_url, headers=headers, json=payload) as resp:
                 if resp.status >= 400:
                     body = await resp.text()
-                    logging.error("RPC POST %s failed: %s %s", rpc_url, resp.status, body)
+                    logging.error(
+                        "RPC POST %s failed: %s %s", rpc_url, resp.status, body
+                    )
                     if resp.status == 404:
                         await state.clear_session()
                 session_header = resp.headers.get("Mcp-Session-Id")
@@ -243,7 +245,9 @@ async def forward_stdin(
 class SSEEvent:
     __slots__ = ("event", "data", "event_id")
 
-    def __init__(self, event: Optional[str], data: Optional[str], event_id: Optional[str]):
+    def __init__(
+        self, event: Optional[str], data: Optional[str], event_id: Optional[str]
+    ):
         self.event = event
         self.data = data
         self.event_id = event_id
@@ -309,7 +313,9 @@ async def runner(args: argparse.Namespace) -> None:
     async with aiohttp.ClientSession(timeout=timeout) as session:
         tasks = [
             asyncio.create_task(
-                read_sse_stream(session, args.sse_url, base_sse_headers, state, stop_event)
+                read_sse_stream(
+                    session, args.sse_url, base_sse_headers, state, stop_event
+                )
             ),
             asyncio.create_task(
                 forward_stdin(session, base_rpc_headers, state, stop_event)
