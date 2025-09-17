@@ -47,7 +47,6 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` to point 
 
 ### Using the Docker Image
 
-If you publish the image to GHCR, call Docker directly so Claude keeps STDIN/STDOUT attached:
 ```json
 {
   "mcpServers": {
@@ -65,8 +64,6 @@ If you publish the image to GHCR, call Docker directly so Claude keeps STDIN/STD
   }
 }
 ```
-
-Restart Claude Desktop after saving the file. Private repositories indexed in Devin should now respond through the proxy.
 
 ## Limitations
 - This project is intentionally minimal and will be retired once Devin MCP or Claude Desktop supports API-key forwarding natively.
