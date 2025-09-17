@@ -1,6 +1,6 @@
 # devin-sse-proxy
 
-[![Build and Push Docker Image](https://github.com/sotayamashita/devin-sse-proxy/actions/workflows/docker.yml/badge.svg)](https://github.com/sotayamashita/devin-sse-proxy/actions/workflows/docker.yml)
+[![CI](https://github.com/sotayamashita/devin-sse-proxy/actions/workflows/ci.yml/badge.svg)](https://github.com/sotayamashita/devin-sse-proxy/actions/workflows/ci.yml)
 
 `devin-sse-proxy` is a minimal Python-based MCP server that allows Claude Desktop to talk to Devin's SSE transport while reliably passing a Personal API Key. It exists as a temporary workaround for the bug described in [issue.md](./specs/issue.md), where the stock `mcp-remote` client drops custom `Authorization` headers and prevents access to private repositories. Windsurf and Claude Code already work against Devin because they manage headers directly; this proxy fills the gap for Claude Desktop until Devin or Claude ships a native fix.
 
